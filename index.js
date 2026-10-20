@@ -1,20 +1,25 @@
-function combineUsers(...usernameArrays) {
-    // 1. Merge all input arrays into a single flat array
-    const flatUsers = usernameArrays.flat();
-    
-    // 2. Generate today's date in "M/d/yyyy" format
-    const today = new Date();
-    const month = today.getMonth() + 1; // Months are 0-indexed, so add 1
-    const day = today.getDate();
-    const year = today.getFullYear();
-    const formattedDate = `${month}/${day}/${year}`;
-    
-    // 3. Return the combined object required by the assertions
-    return {
-        users: flatUsers,
-        merge_date: formattedDate
+// Step 5 requirement: Require datejs at the top, outside of the function
+require('datejs');
+
+function combineUsers(...args) {
+    // Step 2: Initialize the Return Object
+    const combinedObject = {
+        users: []
     };
+
+    // Step 3: Loop through args to isolate each array
+    for (const usernameArray of args) {
+        // Step 4: Using a spread operator, merge arrays together into the users attribute
+        combinedObject.users = [...combinedObject.users, ...usernameArray];
+    }
+
+    // Step 5: Get today's date using datejs and format as M/d/yyyy
+    // Date.today() is provided globally by the datejs library package
+    combinedObject.merge_date = Date.today().toString('M/d/yyyy');
+
+    // Step 7: Return object
+    return combinedObject;
 }
 
-// Export the function so the test suite can import it
+// Export the function so your test environment suite can read it
 module.exports = { combineUsers };
